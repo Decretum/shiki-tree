@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 /**
  * @author Shiqi
- *
  */
 public class BGGeneration {
     private BGRule rule;
@@ -43,13 +42,11 @@ public class BGGeneration {
             System.out.println("Tree size when end: " + tree.size());
         }
         System.out.println("All stems we have: " + tree.size());
-
     }
 
     public int calculateGenerationNum(int iteration) {
         return (int) Math.pow(rule.forkNum, iteration);
     }
-
 
     /**
      * @return the firstStem

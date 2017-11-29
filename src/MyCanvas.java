@@ -10,7 +10,7 @@ import javax.swing.JPanel;
  * @author Shiqi
  *
  */
-public class MyCanvas extends JPanel {
+public class MyCanvas extends JPanel { // todo shiki Good use of inheritance here :) I hope you know how it works because if not I should probably explain it to you later
     private ArrayList<BGStem> tree;
 //	private double xstart;
 //	private double ystart;
@@ -22,14 +22,14 @@ public class MyCanvas extends JPanel {
      */
     public MyCanvas(ArrayList<BGStem> tree2) {
         tree = tree2;
-        System.out.println("Canvas: I've got the tree!");
+        System.out.println("Canvas constructor invoked");
     }
 
     /**
      *
      */
     public MyCanvas() {
-        // TODO Auto-generated constructor stub
+
     }
 
     /**
@@ -42,7 +42,7 @@ public class MyCanvas extends JPanel {
 
     public void draw(BGStem stem) {
         tree.add(stem);
-        this.repaint();
+        repaint();
     }
 
     @Override
@@ -53,12 +53,12 @@ public class MyCanvas extends JPanel {
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, size.width, size.height);
         g2d.setColor(Color.black);
-        if(tree == null)
+        if(tree == null) // TODO SHIKI I generally suggest using  { } even for these one-line statements just for code quality and clarity.
             return;
-        for(int i = 0; i < tree.size(); i++){
+        for(int i = 0; i < tree.size(); i++){ // TODO SHIKI please put a space between your ) and {. It's not a huge deal but I see you forget to do this a lot.
             BGStem stem = tree.get(i);
             g2d.drawLine((int) stem.xstart + 550, 600 - (int) stem.ystart + 100, (int) stem.xend + 550, 600 - (int) stem.yend + 100);
-            // System.out.println("canvas: I sleep!");
+            // System.out.println("canvas: I sleep!"); // TODO SHIKI don't forget to remove your comments that you used to debug your program before turning it in.
         }
     }
 

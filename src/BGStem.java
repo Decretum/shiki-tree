@@ -23,10 +23,10 @@ public class BGStem {
         this.angle = angle;
     }
 
-    public void calculate(double length, double xstart, double ystart, double xend, double yend,double angle) {
-        this.angle = angle;
+    public void calculate(double length, double xstart, double ystart, double xend, double yend,double angle) { // TODO SHIKI you have some parameters that are not being used here?
+        this.angle = angle; // TODO SHIKI also you should rename this method to be more specific. What are you calculating?
         this.length = length / 2;
-        this. xstart = xend;
+        this.xstart = xend;
         this.ystart = yend;
         this.xend = xend + this.length * Math.cos(Math.toRadians(angle));
         //System.out.println("cos(" + angle +") : "+ Math.cos(angle));
@@ -34,13 +34,10 @@ public class BGStem {
         //System.out.println("sin(" + angle +") : "+ Math.sin(angle));
     }
 
-
-
     @Override
     public String toString() {
         return "BGStem [length=" + length + ", start: (" + xstart + " , " + ystart + "), end: (" + xend + " , "
                 + yend + ")]";
     }
-
 
 }

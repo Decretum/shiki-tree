@@ -1,24 +1,15 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.Label;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.text.html.HTMLDocument.Iterator;
 
 /**
  * @author Shiqi
@@ -30,7 +21,7 @@ public class ShiqiAPP implements ActionListener, ChangeListener {
     private static final int LENGTH_MIN = 100;
     private static final int LENGTH_MAX = 500;
     private static final int LENGTH_INIT = 350;// initial stem length
-    final static int maxGap = 20;
+    final static int maxGap = 20; // TODO SHIKI is this thing being used anywhere?
     private Logger log = Logger.getLogger(ShiqiAPP.class.getName());
     private JFrame frame;
     private JPanel mainPanel = null;
@@ -52,7 +43,6 @@ public class ShiqiAPP implements ActionListener, ChangeListener {
     public ShiqiAPP() {
         log.info("App started");
         initGUI();
-
     }
 
     private void initGUI() {
@@ -81,7 +71,7 @@ public class ShiqiAPP implements ActionListener, ChangeListener {
         panels.add(p_angle);
         JPanel p_length = new JPanel(new BorderLayout());
         panels.add(p_length);
-        JPanel p_forks = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel p_forks = new JPanel(new GridLayout(1, 2, 1, 1));
         panels.add(p_forks);
         JPanel p_generations = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panels.add(p_generations);
@@ -94,6 +84,19 @@ public class ShiqiAPP implements ActionListener, ChangeListener {
         startBtn.addActionListener(this);// subscribe to button events
         stopBtn = new JButton("Clear");
         stopBtn.addActionListener(this);// subscribe to button events
+
+        // TODO SHIKI have you considered using custom actionlisteners for each individual button? I personally prefer doing that instead of
+        // just using one actionlistener for the entire box. Here's how that would work, in case you are curious:
+
+        stopBtn.addActionListener((actionEvent) -> {
+            //Whatever the fuck the stopButton is suppose to do when clicked
+            log.info("action:clear");
+            canvas.setTree(null);
+            canvas.repaint();
+        });
+
+        // TODO SHIKI above is the sample code to create the custom actionlistener for each object. It's pretty straightforward really
+        // and I personally like it because it makes each button/slider/whatever really obvious to tell what it does.
 
         // initialize the angleSilder section
         JLabel lb1 = new JLabel("<html><font size=+2><b>Angle</b></font></html>");
@@ -118,14 +121,15 @@ public class ShiqiAPP implements ActionListener, ChangeListener {
         String[] forkNumStrings = {"2", "3", "4", "5", "6", "7", "8"};
         // Create the combo box, select item at index 0.
         // Indices start at 0, so 0 specifies "2".
-        forkNumList = new JComboBox<String>(forkNumStrings);
+        forkNumList = new JComboBox<>(forkNumStrings);
+        forkNumList.setSize(20, forkNumList.getPreferredSize().height);
         forkNumList.setSelectedIndex(1);// default selected fork number is 3
         forkNumList.addActionListener(this);
 
         // initialize the generation number list section
         JLabel lb4 = new JLabel("<html><font size=+2><b>Generations</b></font></html>");
         String[] generationNumStrings = {"1", "2", "3", "4", "5", "6", "7"};
-        generationNumList = new JComboBox<String>(generationNumStrings);
+        generationNumList = new JComboBox<>(generationNumStrings);
         generationNumList.setSelectedIndex(4);// default selected fork number is
         // 5
         generationNumList.addActionListener(this);
@@ -133,7 +137,7 @@ public class ShiqiAPP implements ActionListener, ChangeListener {
         // rules hot keys
         JLabel lb5 = new JLabel("<html><font size=+2><b>Given Rules</b></font></html>");
         String[] rulesStrings = {"-", "1", "2", "3", "4", "5"};
-        rulesList = new JComboBox<String>(rulesStrings);
+        rulesList = new JComboBox<>(rulesStrings);
         rulesList.setSelectedIndex(0);
         rulesList.addActionListener(this);
 
@@ -158,20 +162,19 @@ public class ShiqiAPP implements ActionListener, ChangeListener {
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-
         if (arg0.getActionCommand().equalsIgnoreCase("Generate")) {
             log.info("action:generate" + arg0);
             BGRule rule = new BGRule(forkNum, angle, initialLength);
             BGGeneration test = new BGGeneration(rule, generationNum);
             System.out.println("Generate: " + "\nRule: " + "BGRule(fork: " + forkNum + ", angle: " + angle
-                    + ", length: " + initialLength + ")" + "\nGenerations: " + generationNum);
+                    + ", length: " + initialLength + ")" + "\nGenerations: " + generationNum); // TODO SHIKI is this a debug statement? Dont forget to remove it when you're done
             Thread canvasThread = new Thread(() -> {
-                canvas.setTree(new ArrayList<BGStem>());
+                canvas.setTree(new ArrayList<>());
                 int sleepTime = 500;
                 for (BGStem stem : test.tree) {
                     // System.out.println(stem.toString());
                     canvas.draw(stem);
-                    try {
+                    try { // TODO SHIKI do something about this while loop, it doesnt make sense
                         while (sleepTime > 4) {
                             sleepTime -= 3;
                         }
@@ -179,7 +182,6 @@ public class ShiqiAPP implements ActionListener, ChangeListener {
 
                         System.out.println("canvas: I got sleep!");
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
@@ -268,12 +270,7 @@ public class ShiqiAPP implements ActionListener, ChangeListener {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new ShiqiAPP();
-            }
-        });
+        SwingUtilities.invokeLater(() -> new ShiqiAPP());
     }
 
 }
