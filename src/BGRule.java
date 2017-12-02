@@ -21,15 +21,15 @@ public class BGRule {
     public ArrayList<BGStem> generateFromStem(ArrayList<BGStem> tree,BGStem stem) {
         if (forkNum % 2 != 0) {
             BGStem center = new BGStem();
-            center.calculate(stem.length, stem.xstart, stem.ystart, stem.xend, stem.yend, stem.angle);
+            center.calculateNextStemBasedOnCurrentStem(stem.length, stem.xstart, stem.ystart, stem.xend, stem.yend, stem.angle);
             tree.add(center);
         }
         for (int i = 1; i <= forkNum / 2; i++) { // TODO SHIKI I changed the code a bit so you have less duplicate code.
             BGStem left = new BGStem();
-            left.calculate(stem.length, stem.xstart, stem.ystart, stem.xend, stem.yend, stem.angle + angle * i);
+            left.calculateNextStemBasedOnCurrentStem(stem.length, stem.xstart, stem.ystart, stem.xend, stem.yend, stem.angle + angle * i);
             tree.add(left);
             BGStem right = new BGStem();
-            right.calculate(stem.length, stem.xstart, stem.ystart, stem.xend, stem.yend, stem.angle - angle * i);
+            right.calculateNextStemBasedOnCurrentStem(stem.length, stem.xstart, stem.ystart, stem.xend, stem.yend, stem.angle - angle * i);
             tree.add(right);
         }
         return tree;

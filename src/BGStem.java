@@ -23,8 +23,8 @@ public class BGStem {
         this.angle = angle;
     }
 
-    public void calculate(double length, double xstart, double ystart, double xend, double yend,double angle) { // TODO SHIKI you have some parameters that are not being used here?
-        this.angle = angle; // TODO SHIKI also you should rename this method to be more specific. What are you calculating?
+    public void calculateNextStemBasedOnCurrentStem(double length, double xstart, double ystart, double xend, double yend,double angle) { // TODO GEORGE I used all these parameters
+        this.angle = angle;
         this.length = length / 2;
         this.xstart = xend;
         this.ystart = yend;
