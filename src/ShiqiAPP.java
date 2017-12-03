@@ -142,9 +142,9 @@ public class ShiqiAPP {
                 canvas.draw(test.tree.get(0));//draw the root first
                 int lastRoundGeneratedNum;
                 int from = 1;
-                int to = 4;
+                int to = forkNum;
                 for (int i = 1; i <= generationNum; i++) {
-                    for (int j = from; j < to; j++) {
+                    for (int j = from; j <= to; j++) {
                     canvas.draw(test.tree.get(j));
                     }
                     lastRoundGeneratedNum = test.calculateGenerationNum(i + 1);
