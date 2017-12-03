@@ -20,7 +20,7 @@ public class ShiqiAPP {
     private static final int ANGLE_INIT = 45; // initial stem angle
     private static final int LENGTH_MIN = 100;
     private static final int LENGTH_MAX = 500;
-    private static final int LENGTH_INIT = 350;// initial stem length
+    private static final int LENGTH_INIT = 330;// initial stem length
     private Logger log = Logger.getLogger(ShiqiAPP.class.getName());
     private JFrame frame;
     private JPanel mainPanel = null;
@@ -49,7 +49,7 @@ public class ShiqiAPP {
 
     private void initGUI() {
         frame = new JFrame();
-        frame.setSize(1500, 950);
+        frame.setSize(1200, 1000);
         frame.setTitle("ShiqiAPP");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -87,6 +87,9 @@ public class ShiqiAPP {
         // initialize buttons
         growByStemBtn = new JButton("Grow By Stem");
         growByStemBtn.addActionListener((actionEvent) -> {
+            growByGenBtn.setEnabled(false);
+            growByStemBtn.setEnabled(false);
+            suspendBtn.setEnabled(true);
             log.info("action:Grow By Stem");
             BGRule rule = new BGRule(forkNum, angle, initialLength);
             BGGeneration test = new BGGeneration(rule, generationNum);
@@ -95,36 +98,93 @@ public class ShiqiAPP {
             Thread canvasThread = new Thread(() -> {
                 canvas.setTree(new ArrayList<>());
                 for (BGStem stem : test.tree) {
-                    // System.out.println(stem.toString());
                     canvas.draw(stem);
                     try {
                         Thread.sleep(5);
-                        //System.out.println("canvas: I got sleep!");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
+                growByStemBtn.setEnabled(false);
+                growByGenBtn.setEnabled(false);
+                suspendBtn.setEnabled(false);
+                playBtn.setEnabled(false);
             });
             canvasThread.start();
 
             suspendBtn.addActionListener((actionEvent1) -> {
                 log.info("action:suspend");
                 canvasThread.suspend();
+                playBtn.setEnabled(true);
+                suspendBtn.setEnabled(false);
             });
 
             playBtn.addActionListener((actionEvent1) -> {
                 log.info("action:play");
                 canvasThread.resume();
+                suspendBtn.setEnabled(true);
+                playBtn.setEnabled(false);
             });
         });
 
         growByGenBtn = new JButton("Grow By Gen");
+        growByGenBtn.addActionListener((actionEvent) -> {
+            growByGenBtn.setEnabled(false);
+            growByStemBtn.setEnabled(false);
+            suspendBtn.setEnabled(true);
+            log.info("action:Grow By Generation");
+            BGRule rule = new BGRule(forkNum, angle, initialLength);
+            BGGeneration test = new BGGeneration(rule, generationNum);
+            //System.out.println("Generate: " + "\nRule: " + "BGRule(fork: " + forkNum + ", angle: " + angle
+            //        + ", length: " + initialLength + ")" + "\nGenerations: " + generationNum);
+            Thread canvasThread = new Thread(() -> {
+                canvas.setTree(new ArrayList<>());
+                canvas.draw(test.tree.get(0));//draw the root first
+                int lastRoundGeneratedNum;
+                int from = 1;
+                int to = 4;
+                for (int i = 1; i <= generationNum; i++) {
+                    for (int j = from; j < to; j++) {
+                    canvas.draw(test.tree.get(j));
+                    }
+                    lastRoundGeneratedNum = test.calculateGenerationNum(i + 1);
+                    from = to + 1;
+                    to = from + lastRoundGeneratedNum - 1;
+                    try {
+                        Thread.sleep(900);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                growByStemBtn.setEnabled(false);
+                growByGenBtn.setEnabled(false);
+                suspendBtn.setEnabled(false);
+                playBtn.setEnabled(false);
+            });
+            canvasThread.start();
+
+            suspendBtn.addActionListener((actionEvent1) -> {
+                log.info("action:suspend");
+                canvasThread.suspend();
+                playBtn.setEnabled(true);
+                suspendBtn.setEnabled(false);
+            });
+
+            playBtn.addActionListener((actionEvent1) -> {
+                log.info("action:play");
+                canvasThread.resume();
+                suspendBtn.setEnabled(true);
+                playBtn.setEnabled(false);
+            });
+        });
 
         Icon suspendIcon = new ImageIcon("img\\suspend.png");
         suspendBtn = new JButton(suspendIcon);
+        suspendBtn.setEnabled(false);
 
         Icon playIcon = new ImageIcon("img\\play.png");
         playBtn = new JButton(playIcon);
+        playBtn.setEnabled(false);
 
 
         clearBtn = new JButton("Clear");
@@ -132,6 +192,10 @@ public class ShiqiAPP {
             log.info("action:clear");
             canvas.setTree(null);
             canvas.repaint();
+            growByStemBtn.setEnabled(true);
+            growByGenBtn.setEnabled(true);
+            suspendBtn.setEnabled(false);
+            playBtn.setEnabled(false);
         });
 
         // initialize the angleSilder section
@@ -198,7 +262,7 @@ public class ShiqiAPP {
             JComboBox<String> source = (JComboBox<String>) actionEvent.getSource();
             if (((String) source.getSelectedItem()).equalsIgnoreCase("1")) {
                 log.info("action:rule1");
-                BGRule rule1 = new BGRule(7, 53, 305);
+                BGRule rule1 = new BGRule(7, 53, 350);
                 // generationNum = 5;
                 forkNumList.setSelectedIndex(rule1.getForkNum() - 2);
                 generationNumList.setSelectedIndex(4);
