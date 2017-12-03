@@ -29,7 +29,10 @@ public class ShiqiAPP {
     private JSlider lengthSlider = null;
     JComboBox<String> forkNumList;
     JComboBox<String> generationNumList;
-    private JButton generateBtn = null;
+    private JButton growByStemBtn = null;
+    private JButton growByGenBtn = null;
+    private JButton suspendBtn = null;
+    private JButton playBtn = null;
     private JButton clearBtn = null;
     private MyCanvas canvas = new MyCanvas();
     private int forkNum = 3;
@@ -64,7 +67,7 @@ public class ShiqiAPP {
     private JPanel getMainPanel() {
         // initialize mainPanel
         mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(6, 1, 50, 50));
+        mainPanel.setLayout(new GridLayout(7, 1, 50, 50));
         mainPanel.setPreferredSize(new Dimension(frame.getWidth() / 4, frame.getHeight()));
         JPanel p_angle = new JPanel(new BorderLayout());
         panels.add(p_angle);
@@ -76,12 +79,15 @@ public class ShiqiAPP {
         panels.add(p_generations);
         JPanel p_rules = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panels.add(p_rules);
-        JPanel p_buttons = new JPanel(new GridLayout(1, 2, 5, 5));
-        panels.add(p_buttons);
-        // initialize two buttons
-        generateBtn = new JButton("Generate");
-        generateBtn.addActionListener((actionEvent1) -> {
-            log.info("action:Generate");
+        JPanel p_growBtns = new JPanel(new GridLayout(2, 2, 5, 5));
+        panels.add(p_growBtns);
+        JPanel p_clearBtn = new JPanel(new GridLayout(1, 1, 0, 0));
+        panels.add(p_clearBtn);
+
+        // initialize buttons
+        growByStemBtn = new JButton("Grow By Stem");
+        growByStemBtn.addActionListener((actionEvent) -> {
+            log.info("action:Grow By Stem");
             BGRule rule = new BGRule(forkNum, angle, initialLength);
             BGGeneration test = new BGGeneration(rule, generationNum);
             //System.out.println("Generate: " + "\nRule: " + "BGRule(fork: " + forkNum + ", angle: " + angle
@@ -100,14 +106,33 @@ public class ShiqiAPP {
                 }
             });
             canvasThread.start();
+
+            suspendBtn.addActionListener((actionEvent1) -> {
+                log.info("action:suspend");
+                canvasThread.suspend();
+            });
+
+            playBtn.addActionListener((actionEvent1) -> {
+                log.info("action:play");
+                canvasThread.resume();
+            });
         });
+
+        growByGenBtn = new JButton("Grow By Gen");
+
+        Icon suspendIcon = new ImageIcon("img\\suspend.png");
+        suspendBtn = new JButton(suspendIcon);
+
+        Icon playIcon = new ImageIcon("img\\play.png");
+        playBtn = new JButton(playIcon);
+
+
         clearBtn = new JButton("Clear");
-        clearBtn.addActionListener((actionEvent2) -> {
+        clearBtn.addActionListener((actionEvent) -> {
             log.info("action:clear");
             canvas.setTree(null);
             canvas.repaint();
         });
-
 
         // initialize the angleSilder section
         JLabel lb1 = new JLabel("<html><font size=+2><b>Angle</b></font></html>");
@@ -116,8 +141,8 @@ public class ShiqiAPP {
         angleSlider.setMinorTickSpacing(5);
         angleSlider.setPaintTicks(true);
         angleSlider.setPaintLabels(true);
-        angleSlider.addChangeListener((changeEvent1) -> {
-            JSlider source = (JSlider) changeEvent1.getSource();
+        angleSlider.addChangeListener((changeEvent) -> {
+            JSlider source = (JSlider) changeEvent.getSource();
             if (!source.getValueIsAdjusting()) {
                 angle = (int) source.getValue();
             }
@@ -129,8 +154,8 @@ public class ShiqiAPP {
         lengthSlider.setMinorTickSpacing(25);
         lengthSlider.setPaintTicks(true);
         lengthSlider.setPaintLabels(true);
-        lengthSlider.addChangeListener((changeEvent2) -> {
-            JSlider source = (JSlider) changeEvent2.getSource();
+        lengthSlider.addChangeListener((changeEvent) -> {
+            JSlider source = (JSlider) changeEvent.getSource();
             if (!source.getValueIsAdjusting()) {
                 initialLength = (int) source.getValue();
             }
@@ -144,8 +169,8 @@ public class ShiqiAPP {
         forkNumList = new JComboBox<>(forkNumStrings);
         forkNumList.setSize(20, forkNumList.getPreferredSize().height);
         forkNumList.setSelectedIndex(1);// default selected fork number is 3
-        forkNumList.addActionListener((actionEvent3) -> {
-            JComboBox<String> source = (JComboBox<String>) actionEvent3.getSource();
+        forkNumList.addActionListener((actionEvent) -> {
+            JComboBox<String> source = (JComboBox<String>) actionEvent.getSource();
             log.info("action:fork");
             forkNum = Integer.parseInt((String) source.getSelectedItem());
             System.out.println("fork: " + forkNum);
@@ -157,8 +182,8 @@ public class ShiqiAPP {
         generationNumList = new JComboBox<>(generationNumStrings);
         generationNumList.setSelectedIndex(4);// default selected fork number is
         // 5
-        generationNumList.addActionListener((actionEvent4) -> {
-            JComboBox<String> source = (JComboBox<String>) actionEvent4.getSource();
+        generationNumList.addActionListener((actionEvent) -> {
+            JComboBox<String> source = (JComboBox<String>) actionEvent.getSource();
             log.info("action:generations");
             generationNum = Integer.parseInt((String) source.getSelectedItem());
             System.out.println("generationNum: " + generationNum);
@@ -169,8 +194,8 @@ public class ShiqiAPP {
         String[] rulesStrings = {"-", "1", "2", "3", "4", "5"};
         rulesList = new JComboBox<>(rulesStrings);
         rulesList.setSelectedIndex(0);
-        rulesList.addActionListener((actionEvent5) -> {
-            JComboBox<String> source = (JComboBox<String>) actionEvent5.getSource();
+        rulesList.addActionListener((actionEvent) -> {
+            JComboBox<String> source = (JComboBox<String>) actionEvent.getSource();
             if (((String) source.getSelectedItem()).equalsIgnoreCase("1")) {
                 log.info("action:rule1");
                 BGRule rule1 = new BGRule(7, 53, 305);
@@ -231,14 +256,16 @@ public class ShiqiAPP {
         p_generations.add(generationNumList);
         p_rules.add(lb5);
         p_rules.add(rulesList);
-        p_buttons.add(generateBtn);
-        p_buttons.add(clearBtn);
+        p_growBtns.add(growByStemBtn);
+        p_growBtns.add(growByGenBtn);
+        p_growBtns.add(suspendBtn);
+        p_growBtns.add(playBtn);
+        p_clearBtn.add(clearBtn);
         for (JPanel p : panels) {
             mainPanel.add(p);
         }
         return mainPanel;
     }
-
 
 
     public static void main(String[] args) {
