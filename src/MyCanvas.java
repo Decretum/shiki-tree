@@ -47,6 +47,9 @@ public class MyCanvas extends JPanel { //TODO GEORGE you can still explain it to
 
     @Override
     public void paint(Graphics g) {
+        Dimension d = this.getSize();
+        double height = d.getHeight();
+        double width = d.getWidth();
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         Dimension size = getSize();
