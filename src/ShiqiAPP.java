@@ -62,11 +62,11 @@ public class ShiqiAPP {
     }
 
     /**
-     *
      * @return JPanel
      */
     private JPanel getMainPanel() {
-        // initialize mainPanel
+
+        // set mainPanel layout
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(7, 1, 50, 50));
         mainPanel.setPreferredSize(new Dimension(frame.getWidth() / 4, frame.getHeight()));
@@ -86,6 +86,7 @@ public class ShiqiAPP {
         panels.add(p_clearBtn);
 
         // initialize buttons
+        // growByStemBtn
         growByStemBtn = new JButton("Grow By Stem");
         growByStemBtn.addActionListener((actionEvent) -> {
             growByGenBtn.setEnabled(false);
@@ -126,6 +127,7 @@ public class ShiqiAPP {
             });
         });
 
+        // growByGenBtn
         growByGenBtn = new JButton("Grow By Gen");
         growByGenBtn.addActionListener((actionEvent) -> {
             growByGenBtn.setEnabled(false);
@@ -175,15 +177,15 @@ public class ShiqiAPP {
             });
         });
 
+        // suspendBtn and playBtn
         Icon suspendIcon = new ImageIcon("img\\suspend.png");
         suspendBtn = new JButton(suspendIcon);
         suspendBtn.setEnabled(false);
-
         Icon playIcon = new ImageIcon("img\\play.png");
         playBtn = new JButton(playIcon);
         playBtn.setEnabled(false);
 
-
+        // clearBtn
         clearBtn = new JButton("Clear");
         clearBtn.addActionListener((actionEvent) -> {
             log.info("action:clear");
@@ -208,6 +210,7 @@ public class ShiqiAPP {
                 angle = (int) source.getValue();
             }
         });
+
         // initialize the lengthSilder section
         JLabel lb2 = new JLabel("<html><font size=+2><b>Length</b></font></html>");
         lengthSlider = new JSlider(JSlider.HORIZONTAL, LENGTH_MIN, LENGTH_MAX, LENGTH_INIT);
@@ -225,11 +228,10 @@ public class ShiqiAPP {
         // initialize the fork number list section
         JLabel lb3 = new JLabel("<html><font size=+2><b>Forks</b></font></html>");
         String[] forkNumStrings = {"2", "3", "4", "5", "6", "7", "8", "9"};
-        // Create the combo box, select item at index 0.
         // Indices start at 0, so 0 specifies "2".
         forkNumList = new JComboBox<>(forkNumStrings);
         forkNumList.setSize(20, forkNumList.getPreferredSize().height);
-        forkNumList.setSelectedIndex(1);// default selected fork number is 3
+        forkNumList.setSelectedIndex(1);// default selected fork number is "3"
         forkNumList.addActionListener((actionEvent) -> {
             JComboBox<String> source = (JComboBox<String>) actionEvent.getSource();
             log.info("action:fork");
@@ -240,8 +242,7 @@ public class ShiqiAPP {
         JLabel lb4 = new JLabel("<html><font size=+2><b>Generations</b></font></html>");
         String[] generationNumStrings = {"1", "2", "3", "4", "5", "6", "7"};
         generationNumList = new JComboBox<>(generationNumStrings);
-        generationNumList.setSelectedIndex(4);// default selected fork number is
-        // 5
+        generationNumList.setSelectedIndex(4);// default selected fork number is "5"
         generationNumList.addActionListener((actionEvent) -> {
             JComboBox<String> source = (JComboBox<String>) actionEvent.getSource();
             log.info("action:generations");
@@ -258,9 +259,8 @@ public class ShiqiAPP {
             if (((String) source.getSelectedItem()).equalsIgnoreCase("1")) {
                 log.info("action:rule1");
                 BGRule rule1 = new BGRule(7, 53, 350);
-                // generationNum = 5;
                 forkNumList.setSelectedIndex(rule1.getForkNum() - 2);
-                generationNumList.setSelectedIndex(4);
+                generationNumList.setSelectedIndex(4); // generationNum = 5;
                 angleSlider.setValue((int) rule1.getAngle());
                 lengthSlider.setValue((int) rule1.getInitialStemLength());
 
@@ -285,7 +285,6 @@ public class ShiqiAPP {
             if (((String) source.getSelectedItem()).equalsIgnoreCase("4")) {
                 log.info("action:rule4");
                 BGRule rule4 = new BGRule(7, 30, 350);
-
                 forkNumList.setSelectedIndex(rule4.getForkNum() - 2);
                 generationNumList.setSelectedIndex(4);// generationNum = 5;
                 angleSlider.setValue((int) rule4.getAngle());
