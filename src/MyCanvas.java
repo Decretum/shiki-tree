@@ -9,24 +9,10 @@ import javax.swing.JPanel;
 /**
  * @author Shiqi
  */
-public class MyCanvas extends JPanel { //TODO GEORGE you can still explain it to me. I've done some research though.
+public class MyCanvas extends JPanel {
     private ArrayList<BGStem> tree;
-//	private double xstart;
-//	private double ystart;
-//	private double xend;
-//	private double yend;
 
-    /**
-     * @param tree2
-     */
-    public MyCanvas(ArrayList<BGStem> tree2) {
-        tree = tree2;
-        System.out.println("Canvas constructor invoked");
-    }
 
-    /**
-     *
-     */
     public MyCanvas() {
 
     }
@@ -38,16 +24,20 @@ public class MyCanvas extends JPanel { //TODO GEORGE you can still explain it to
         this.tree = tree;
     }
 
+    /**
+     * @param stem the stem to draw
+     */
     public void draw(BGStem stem) {
         tree.add(stem);
         repaint();
     }
 
-    public void draw(ArrayList<BGStem> tree) {
-        setTree(tree);
-        repaint();
-    }
 
+    /**
+     *
+     * @param g
+     * draw all the stems in the private ArrayList called tree
+     */
     @Override
     public void paint(Graphics g) {
         super.paint(g);

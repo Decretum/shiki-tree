@@ -10,10 +10,19 @@ public class BGStem {
     double yend;
     double angle;
 
-    public BGStem(){
+    public BGStem() {
 
     }
 
+    /**
+     *
+     * @param length
+     * @param xstart
+     * @param ystart
+     * @param xend
+     * @param yend
+     * @param angle
+     */
     public BGStem(double length, double xstart, double ystart, double xend, double yend, double angle) {
         this.length = length;
         this.xstart = xstart;
@@ -23,15 +32,22 @@ public class BGStem {
         this.angle = angle;
     }
 
-    public void calculateNextStemBasedOnCurrentStem(double length, double xstart, double ystart, double xend, double yend,double angle) { // TODO GEORGE I used all these parameters
+    /**
+     *
+     * @param length
+     * @param xstart
+     * @param ystart
+     * @param xend
+     * @param yend
+     * @param angle
+     */
+    public void calculateNextStemBasedOnCurrentStem(double length, double xstart, double ystart, double xend, double yend, double angle) { // TODO GEORGE I used all these parameters
         this.angle = angle;
         this.length = length / 2;
         this.xstart = xend;
         this.ystart = yend;
         this.xend = xend + this.length * Math.cos(Math.toRadians(angle));
-        //System.out.println("cos(" + angle +") : "+ Math.cos(angle));
         this.yend = yend + this.length * Math.sin(Math.toRadians(angle));
-        //System.out.println("sin(" + angle +") : "+ Math.sin(angle));
     }
 
     @Override

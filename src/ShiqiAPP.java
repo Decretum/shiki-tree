@@ -41,7 +41,7 @@ public class ShiqiAPP {
     private int generationNum = 5;
     private JComboBox<String> rulesList;
 
-    // constructor
+
     public ShiqiAPP() {
         log.info("App started");
         initGUI();
@@ -62,7 +62,8 @@ public class ShiqiAPP {
     }
 
     /**
-     * @return JPanel Build the top main panel
+     *
+     * @return JPanel
      */
     private JPanel getMainPanel() {
         // initialize mainPanel
@@ -93,8 +94,6 @@ public class ShiqiAPP {
             log.info("action:Grow By Stem");
             BGRule rule = new BGRule(forkNum, angle, initialLength);
             BGGeneration test = new BGGeneration(rule, generationNum);
-            //System.out.println("Generate: " + "\nRule: " + "BGRule(fork: " + forkNum + ", angle: " + angle
-            //        + ", length: " + initialLength + ")" + "\nGenerations: " + generationNum); // TODO GEORGE can i just comment it?
             Thread canvasThread = new Thread(() -> {
                 canvas.setTree(new ArrayList<>());
                 for (BGStem stem : test.tree) {
@@ -135,8 +134,6 @@ public class ShiqiAPP {
             log.info("action:Grow By Generation");
             BGRule rule = new BGRule(forkNum, angle, initialLength);
             BGGeneration test = new BGGeneration(rule, generationNum);
-            //System.out.println("Generate: " + "\nRule: " + "BGRule(fork: " + forkNum + ", angle: " + angle
-            //        + ", length: " + initialLength + ")" + "\nGenerations: " + generationNum);
             Thread canvasThread = new Thread(() -> {
                 canvas.setTree(new ArrayList<>());
                 canvas.draw(test.tree.get(0));//draw the root first
@@ -145,9 +142,9 @@ public class ShiqiAPP {
                 int to = forkNum;
                 for (int i = 1; i <= generationNum; i++) {
                     for (int j = from; j <= to; j++) {
-                    canvas.draw(test.tree.get(j));
+                        canvas.draw(test.tree.get(j));
                     }
-                    lastRoundGeneratedNum = test.calculateGenerationNum(i + 1);
+                    lastRoundGeneratedNum = test.calculateGeneratedNum(i + 1);
                     from = to + 1;
                     to = from + lastRoundGeneratedNum - 1;
                     try {
@@ -237,7 +234,6 @@ public class ShiqiAPP {
             JComboBox<String> source = (JComboBox<String>) actionEvent.getSource();
             log.info("action:fork");
             forkNum = Integer.parseInt((String) source.getSelectedItem());
-            System.out.println("fork: " + forkNum);
         });
 
         // initialize the generation number list section
@@ -250,10 +246,9 @@ public class ShiqiAPP {
             JComboBox<String> source = (JComboBox<String>) actionEvent.getSource();
             log.info("action:generations");
             generationNum = Integer.parseInt((String) source.getSelectedItem());
-            System.out.println("generationNum: " + generationNum);
         });
 
-        // rules hot keys
+        // initialize given rules
         JLabel lb5 = new JLabel("<html><font size=+2><b>Given Rules</b></font></html>");
         String[] rulesStrings = {"-", "1", "2", "3", "4", "5"};
         rulesList = new JComboBox<>(rulesStrings);
@@ -273,9 +268,8 @@ public class ShiqiAPP {
             if (((String) source.getSelectedItem()).equalsIgnoreCase("2")) {
                 log.info("action:rule2");
                 BGRule rule2 = new BGRule(7, 60, 350);
-                // generationNum = 5;
                 forkNumList.setSelectedIndex(rule2.getForkNum() - 2);
-                generationNumList.setSelectedIndex(4);
+                generationNumList.setSelectedIndex(4);// generationNum = 5;
                 angleSlider.setValue((int) rule2.getAngle());
                 lengthSlider.setValue((int) rule2.getInitialStemLength());
 
@@ -283,27 +277,25 @@ public class ShiqiAPP {
             if (((String) source.getSelectedItem()).equalsIgnoreCase("3")) {
                 log.info("action:rule3");
                 BGRule rule3 = new BGRule(5, 60, 350);
-                // generationNum = 7;
                 forkNumList.setSelectedIndex(rule3.getForkNum() - 2);
-                generationNumList.setSelectedIndex(6);
+                generationNumList.setSelectedIndex(6);// generationNum = 7;
                 angleSlider.setValue((int) rule3.getAngle());
                 lengthSlider.setValue((int) rule3.getInitialStemLength());
             }
             if (((String) source.getSelectedItem()).equalsIgnoreCase("4")) {
                 log.info("action:rule4");
                 BGRule rule4 = new BGRule(7, 30, 350);
-                // generationNum = 5;
+
                 forkNumList.setSelectedIndex(rule4.getForkNum() - 2);
-                generationNumList.setSelectedIndex(4);
+                generationNumList.setSelectedIndex(4);// generationNum = 5;
                 angleSlider.setValue((int) rule4.getAngle());
                 lengthSlider.setValue((int) rule4.getInitialStemLength());
             }
             if (((String) source.getSelectedItem()).equalsIgnoreCase("5")) {
                 log.info("action:rule5");
                 BGRule rule5 = new BGRule(9, 36, 330);
-                // generationNum = 4;
                 forkNumList.setSelectedIndex(rule5.getForkNum() - 2);
-                generationNumList.setSelectedIndex(3);
+                generationNumList.setSelectedIndex(3);// generationNum = 4;
                 angleSlider.setValue((int) rule5.getAngle());
                 lengthSlider.setValue((int) rule5.getInitialStemLength());
             }
