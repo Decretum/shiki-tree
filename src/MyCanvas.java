@@ -14,7 +14,6 @@ public class MyCanvas extends JPanel {
 
 
     public MyCanvas() {
-
     }
 
     /**

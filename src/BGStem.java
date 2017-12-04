@@ -1,6 +1,5 @@
 /**
  * @author Shiqi
- *
  */
 public class BGStem {
     double length;
@@ -11,11 +10,9 @@ public class BGStem {
     double angle;
 
     public BGStem() {
-
     }
 
     /**
-     *
      * @param length
      * @param xstart
      * @param ystart
@@ -33,7 +30,6 @@ public class BGStem {
     }
 
     /**
-     *
      * @param length
      * @param xstart
      * @param ystart
@@ -41,7 +37,7 @@ public class BGStem {
      * @param yend
      * @param angle
      */
-    public void calculateNextStemBasedOnCurrentStem(double length, double xstart, double ystart, double xend, double yend, double angle) { // TODO GEORGE I used all these parameters
+    public void calculateNextStemBasedOnCurrentStem(double length, double xstart, double ystart, double xend, double yend, double angle) {
         this.angle = angle;
         this.length = length / 2;
         this.xstart = xend;

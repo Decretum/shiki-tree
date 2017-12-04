@@ -24,11 +24,12 @@ public class ShiqiAPP {
     private Logger log = Logger.getLogger(ShiqiAPP.class.getName());
     private JFrame frame;
     private JPanel mainPanel = null;
-    ArrayList<JPanel> panels = new ArrayList<JPanel>();
+    protected ArrayList<JPanel> panels = new ArrayList<JPanel>();
     private JSlider angleSlider = null;
     private JSlider lengthSlider = null;
-    JComboBox<String> forkNumList;
-    JComboBox<String> generationNumList;
+    protected JComboBox<String> forkNumList;
+    protected JComboBox<String> generationNumList;
+    private JComboBox<String> rulesList;
     private JButton growByStemBtn = null;
     private JButton growByGenBtn = null;
     private JButton suspendBtn = null;
@@ -39,7 +40,6 @@ public class ShiqiAPP {
     private int angle = ANGLE_INIT;
     private int initialLength = LENGTH_INIT;
     private int generationNum = 5;
-    private JComboBox<String> rulesList;
 
 
     public ShiqiAPP() {
